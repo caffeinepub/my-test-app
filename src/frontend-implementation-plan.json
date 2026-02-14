@@ -1,0 +1,199 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "My Test App — Multiple-choice quiz (Airtable + local fallback)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Add Home, Quiz, and Result screens and wire navigation: Home→Quiz via “Start Test”, Result→Home via “Restart Test” with full reset.",
+      "acceptanceCriteria": [
+        "App has a Home screen with a visible \"Start Test\" button.",
+        "Tapping \"Start Test\" navigates to the Quiz screen.",
+        "Result screen contains a visible \"Restart Test\" button.",
+        "Tapping \"Restart Test\" returns to Home and resets quiz progress and score."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the main app shell for “My Test App” implementing a simple 3-screen flow (Home, Quiz, Result) and state-driven navigation between them. Ensure “Start Test” goes to Quiz and “Restart Test” returns to Home while resetting quiz state."
+        },
+        {
+          "path": "frontend/src/screens/HomeScreen.tsx",
+          "operation": "create",
+          "description": "Create the Home screen UI containing the visible “Start Test” button and a lightweight area for Airtable configuration inputs (as required by REQ-2)."
+        },
+        {
+          "path": "frontend/src/screens/QuizScreen.tsx",
+          "operation": "create",
+          "description": "Create the Quiz screen view and accept props/callbacks to drive answering and “Next” progression (wired by App)."
+        },
+        {
+          "path": "frontend/src/screens/ResultScreen.tsx",
+          "operation": "create",
+          "description": "Create the Result screen UI showing final score and a visible “Restart Test” button that triggers a full reset + navigation back to Home."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Load questions from Airtable via backend-proxied calls and provide Airtable configuration inputs (Base ID, Table name/ID, API token) without exposing the token in the frontend bundle.",
+      "acceptanceCriteria": [
+        "Airtable records are mapped into an internal Question model with text + 4 options + correct answer.",
+        "The app can successfully load a list of questions from Airtable when valid Airtable configuration is provided.",
+        "No Airtable API token is present in frontend source or built JS bundle (token is kept server-side / canister-side).",
+        "If Airtable configuration is missing or the fetch fails, the user sees an understandable error state or a fallback (see REQ-3)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/lib/questionTypes.ts",
+          "operation": "create",
+          "description": "Define the internal Question model used by the UI (question text, four options A–D, correct answer) and helpers to normalize/validate parsed Airtable data into this model."
+        },
+        {
+          "path": "frontend/src/lib/airtableConfig.ts",
+          "operation": "create",
+          "description": "Add a small client-side Airtable configuration helper (Base ID, Table name or Table ID, API token) that keeps the API token only in runtime memory (do not persist to localStorage) and provides a way to submit it to the backend for server-side storage."
+        },
+        {
+          "path": "frontend/src/lib/backendClient.ts",
+          "operation": "create",
+          "description": "Create a thin frontend wrapper around the existing backend interface (e.g., isConfigured, loadQuestions, setAirtableCreds, setDefaultAirtableConfig). Keep this wrapper focused on calling backend capabilities and returning raw strings for parsing."
+        },
+        {
+          "path": "frontend/src/hooks/useQuestions.ts",
+          "operation": "create",
+          "description": "Implement a React hook that attempts to load questions from the backend (which performs Airtable access) and maps them into the internal Question model; on failure or missing configuration, it must surface an understandable error and allow fallback to the local dataset (REQ-3)."
+        },
+        {
+          "path": "frontend/src/screens/HomeScreen.tsx",
+          "operation": "modify",
+          "description": "Add Airtable configuration inputs (Base ID, Table name or Table ID, API token) and a “Save/Apply” action that calls backend configuration functions via backendClient. Ensure the token is never hardcoded and is only sent to backend at runtime (not embedded in code). Use the shadcn-ui components (e.g., Button/Input) to build consistent form controls; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire question loading into app startup / Start Test flow by calling useQuestions, showing a clear loading and error/fallback-ready state. Ensure no Airtable API token is embedded in constants, source, or build-time environment variables shipped to the browser."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Provide a bundled local fallback question set used automatically when Airtable is not configured or temporarily unavailable.",
+      "acceptanceCriteria": [
+        "When Airtable loading fails or is not configured, the app loads a local set of questions instead of staying blank.",
+        "The fallback question set uses the same 4-option (A–D) structure and includes a correct answer for scoring.",
+        "A user can complete the full quiz using only the local fallback dataset."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/data/fallbackQuestions.ts",
+          "operation": "create",
+          "description": "Create a static, bundled fallback question set using the same internal Question model shape (A–D options + correct answer) with enough questions to complete a full quiz run."
+        },
+        {
+          "path": "frontend/src/hooks/useQuestions.ts",
+          "operation": "modify",
+          "description": "Add fallback logic: if backend/Airtable loading fails or is not configured, automatically load and return the local fallbackQuestions dataset, while exposing a non-blocking message indicating fallback mode."
+        },
+        {
+          "path": "frontend/src/screens/QuizScreen.tsx",
+          "operation": "modify",
+          "description": "Ensure the Quiz screen can render and run entirely from the questions provided by the hook, regardless of whether they came from Airtable or the bundled fallback dataset."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Implement the Quiz screen to show one question at a time with four options (A–D) and score +1 only for correct answers, preventing double-scoring per question.",
+      "acceptanceCriteria": [
+        "Only one question is displayed at a time.",
+        "Exactly four selectable options (A–D) are rendered for each question.",
+        "Selecting an option records the user's answer for that question.",
+        "If the selected option matches CorrectAnswer, the score increments by 1; otherwise score does not change.",
+        "The same question cannot increment the score more than once (no double-scoring by repeated taps)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/screens/QuizScreen.tsx",
+          "operation": "modify",
+          "description": "Implement one-question-at-a-time rendering and four selectable option buttons (A–D). Once an option is selected, lock scoring for that question to prevent repeated taps from incrementing score again. Use shadcn-ui Button to implement option buttons with consistent interaction states; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/lib/quizState.ts",
+          "operation": "create",
+          "description": "Add small pure helpers for quiz progression and scoring (e.g., compute whether an answer is correct, and ensure a question can be scored only once), to keep UI logic simple and testable."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Store and update quiz state (current question index, selected answers, score) in a single place so QuizScreen interactions deterministically update score and prevent double-scoring."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Add “Next” button to advance questions and navigate to Result after the last question; show final score as “Your Score: X/Y”.",
+      "acceptanceCriteria": [
+        "A \"Next\" button is present on the Quiz screen.",
+        "Tapping \"Next\" advances to the next question until the last question is completed.",
+        "After advancing past the last question, the app navigates to the Result screen.",
+        "Result screen shows \"Your Score: X/Y\" using the computed score X and total questions Y."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/screens/QuizScreen.tsx",
+          "operation": "modify",
+          "description": "Add a visible “Next” button that advances to the next question. Disable or gate advancing until an option is selected (to ensure Y reflects attempted questions), and when the last question is advanced past, trigger navigation to the Result screen via a callback. Use shadcn-ui Button for the Next control; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/screens/ResultScreen.tsx",
+          "operation": "modify",
+          "description": "Render the final score string exactly as “Your Score: X/Y”, where Y is the total number of questions attempted in the run."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire QuizScreen “Next/finish” behavior to switch to Result at the end, and pass computed score and attempted question count into ResultScreen."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Apply simple, mobile-friendly styling: white background, large readable text, colorful option buttons, responsive layout for small screens.",
+      "acceptanceCriteria": [
+        "All screens use a predominantly white background.",
+        "Question and option text is large and readable on small screens.",
+        "Option buttons use clear, colorful styling with good contrast and accessible tap targets.",
+        "UI remains usable on narrow mobile viewports (no horizontal overflow, key actions visible without precision tapping)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Add/ensure Tailwind base setup and global styling defaults for a white background and readable typography. Keep user-facing styling minimal and mobile-friendly."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Apply a consistent responsive layout container (padding, max widths, vertical spacing) for all screens so content fits narrow mobile viewports without horizontal overflow."
+        },
+        {
+          "path": "frontend/src/screens/QuizScreen.tsx",
+          "operation": "modify",
+          "description": "Style question text for readability and implement colorful option buttons with adequate contrast and tap targets. Prefer shadcn-ui Button variants/classes to keep styling consistent; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/screens/HomeScreen.tsx",
+          "operation": "modify",
+          "description": "Style Home screen content (title, config form, Start Test button) for mobile readability on a white background using Tailwind + shadcn-ui components where applicable; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/screens/ResultScreen.tsx",
+          "operation": "modify",
+          "description": "Style Result screen score display and Restart button for readability and mobile-friendly spacing. Use shadcn-ui Button for primary actions; verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "kind": "build_request",
+  "title": "My Test App — Multiple-choice quiz with Airtable question source",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create three screens (Home, Quiz, Result) for the app named \"My Test App\" and implement navigation between them: Home -> Quiz via a \"Start Test\" button, and Result -> Home via a \"Restart Test\" button.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Name: My Test App\n- Screens: Home Screen, Quiz Screen, Result Screen",
+          "Home Screen:\n- A button “Start Test” that takes the user to the Quiz Screen.",
+          "Result Screen:\n- Add a “Restart Test” button that takes the user back to the Home Screen."
+        ]
+      },
+      "acceptanceCriteria": [
+        "App has a Home screen with a visible \"Start Test\" button.",
+        "Tapping \"Start Test\" navigates to the Quiz screen.",
+        "Result screen contains a visible \"Restart Test\" button.",
+        "Tapping \"Restart Test\" returns to Home and resets quiz progress and score."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement Airtable-backed question loading using the Airtable columns: Question, OptionA, OptionB, OptionC, OptionD, CorrectAnswer. Add configuration inputs for Airtable connection (Base ID, Table name or Table ID, and API token) without hardcoding secrets into the frontend bundle.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Database:\nUse Airtable as a data source with these columns:\nQuestion | OptionA | OptionB | OptionC | OptionD | CorrectAnswer"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Airtable records are mapped into an internal Question model with text + 4 options + correct answer.",
+        "The app can successfully load a list of questions from Airtable when valid Airtable configuration is provided.",
+        "No Airtable API token is present in frontend source or built JS bundle (token is kept server-side / canister-side).",
+        "If Airtable configuration is missing or the fetch fails, the user sees an understandable error state or a fallback (see REQ-3)."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Provide a local fallback question set (static, bundled with the frontend) so the Quiz screen can still be used when Airtable is not configured or temporarily unavailable.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Show one question at a time from a local or Airtable database."
+        ]
+      },
+      "acceptanceCriteria": [
+        "When Airtable loading fails or is not configured, the app loads a local set of questions instead of staying blank.",
+        "The fallback question set uses the same 4-option (A–D) structure and includes a correct answer for scoring.",
+        "A user can complete the full quiz using only the local fallback dataset."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Build the Quiz screen to show one question at a time with 4 options (A, B, C, D). Selecting an option evaluates correctness against CorrectAnswer and increases score by +1 only when the selected option is correct.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Quiz Screen:\n- Show one question at a time from a local or Airtable database.\n- Each question has 4 options (A, B, C, D).\n- When the user selects the correct option, increase score by +1."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Only one question is displayed at a time.",
+        "Exactly four selectable options (A–D) are rendered for each question.",
+        "Selecting an option records the user's answer for that question.",
+        "If the selected option matches CorrectAnswer, the score increments by 1; otherwise score does not change.",
+        "The same question cannot increment the score more than once (no double-scoring by repeated taps)."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Add a \"Next\" button on the Quiz screen that loads the next question. After the last question, automatically navigate to the Result screen and display the final score as \"Your Score: X/Y\" where Y is the total number of questions attempted in that run.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "- A “Next” button loads the next question.\n- After the last question, navigate to Result Screen and show the final score.",
+          "Result Screen:\n- Display the user’s total score, for example: “Your Score: 3/5”."
+        ]
+      },
+      "acceptanceCriteria": [
+        "A \"Next\" button is present on the Quiz screen.",
+        "Tapping \"Next\" advances to the next question until the last question is completed.",
+        "After advancing past the last question, the app navigates to the Result screen.",
+        "Result screen shows \"Your Score: X/Y\" using the computed score X and total questions Y."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Apply the requested simple UI styling: white background, large readable text, and colorful buttons for the answer options; ensure the layout is mobile-friendly for Android/iOS-sized screens (responsive).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Design:\nKeep it simple — white background, large readable text, colorful buttons for options.",
+          "Platforms:\nAndroid + iOS compatible."
+        ]
+      },
+      "acceptanceCriteria": [
+        "All screens use a predominantly white background.",
+        "Question and option text is large and readable on small screens.",
+        "Option buttons use clear, colorful styling with good contrast and accessible tap targets.",
+        "UI remains usable on narrow mobile viewports (no horizontal overflow, key actions visible without precision tapping)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (all logic in the main actor).",
+    "Do not edit any frontend files under the immutable paths listed in SYSTEM_CONTEXT (compose existing UI components instead).",
+    "Use English for all user-facing text.",
+    "Do not place Airtable secrets in the frontend bundle."
+  ],
+  "nonGoals": [
+    "User accounts, login, or Internet Identity integration.",
+    "Timed tests, question categories, negative marking, or review/solutions features.",
+    "Real-time multiplayer or chat.",
+    "Third-party authentication providers or external databases other than Airtable via its REST API."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

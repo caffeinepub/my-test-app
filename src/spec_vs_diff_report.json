@@ -1,0 +1,63 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-13T09:10:32.826Z",
+  "summary": "Most core quiz functionality is implemented: Home/Quiz/Result screens with navigation, scoring with double-tap prevention, Next-to-Result flow, Airtable-backed loading via backend with a local fallback set, and mobile-friendly styling. However, the exact required score text format on the Result screen is not met, and Internet Identity support was added despite being a stated non-goal.",
+  "missing_requirements": [
+    {
+      "id": "REQ-5",
+      "requirement": "Result screen displays the final score as the exact string \"Your Score: X/Y\" (with Y = total questions attempted).",
+      "reason": "Result screen shows a \"Your Score\" label and then renders \"{score}/{totalQuestions}\" separately, but not the exact combined string \"Your Score: X/Y\" as specified.",
+      "evidence": [
+        "frontend/src/screens/ResultScreen.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Internet Identity integration hooks/provider (authentication/identity management) added to the frontend.",
+      "reason": "BuildRequest explicitly lists user accounts/login/Internet Identity integration as non-goals, but the diff introduces an InternetIdentityProvider and related hooks and uses it in app bootstrap.",
+      "evidence": [
+        "frontend/src/hooks/useInternetIdentity.ts",
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/main.tsx"
+      ]
+    },
+    {
+      "description": "Result screen includes performance messages with emojis (🎉 👍 💪 📚).",
+      "reason": "Not requested; user-facing text was requested to be English, and the spec only required displaying the score string and restart navigation.",
+      "evidence": [
+        "frontend/src/screens/ResultScreen.tsx"
+      ]
+    },
+    {
+      "description": "Footer includes “Built with ❤️ using caffeine.ai” and an external link with UTM parameters.",
+      "reason": "Not requested by the BuildRequest and adds additional UI/content beyond the three required screens.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.74,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/data/fallbackQuestions.ts",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/hooks/useQuestions.ts",
+    "frontend/src/index.css",
+    "frontend/src/lib/questionTypes.ts",
+    "frontend/src/main.tsx",
+    "frontend/src/screens/HomeScreen.tsx",
+    "frontend/src/screens/QuizScreen.tsx",
+    "frontend/src/screens/ResultScreen.tsx",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

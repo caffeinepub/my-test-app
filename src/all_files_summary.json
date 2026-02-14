@@ -1,0 +1,21 @@
+{
+  "backend/main.mo": "Motoko canister managing principal-scoped Airtable credentials and performing authenticated HTTP requests to load questions via http-outcalls.",
+  "feature_evidence.json": "Feature evidence report mapping implemented features to affected files, components, and test IDs.",
+  "frontend-file-summaries.txt": "Prewritten summaries describing the purpose of each frontend source file for quick reference.",
+  "frontend/index.css": "Tailwind base stylesheet defining OKLCH color tokens for light and dark themes.",
+  "frontend/index.html": "Base HTML file mounting the React app and loading main.tsx.",
+  "frontend/src/App.tsx": "Main React component controlling navigation between Home, Quiz, and Result and managing quiz state.",
+  "frontend/src/data/fallbackQuestions.ts": "Static set of 10 fallback quiz questions used when Airtable loading fails or isn’t configured.",
+  "frontend/src/hooks/useActor.ts": "React hook creating and refreshing a backend actor tied to Internet Identity authentication.",
+  "frontend/src/hooks/useInternetIdentity.ts": "React context and hooks for managing Internet Identity login, state persistence, and identity loading.",
+  "frontend/src/hooks/useQueries.ts": "Placeholder for query-related logic; unused since useQuestions handles backend interaction.",
+  "frontend/src/hooks/useQuestions.ts": "React hook that loads quiz questions from a backend actor or falls back to default questions, with config saving and loading states.",
+  "frontend/src/index.css": "Tailwind base styles and custom OKLCH color variables for light and dark themes.",
+  "frontend/src/lib/questionTypes.ts": "Defines question and Airtable types and includes a parser converting Airtable JSON into validated Question objects.",
+  "frontend/src/main.tsx": "App entry point that sets up React Query and Internet Identity provider before rendering the app.",
+  "frontend/src/screens/HomeScreen.tsx": "UI for configuring Airtable credentials and starting the quiz, showing loading states and fallback behavior.",
+  "frontend/src/screens/QuizScreen.tsx": "Renders a single quiz question with answer selection UI and progress tracking.",
+  "frontend/src/screens/ResultScreen.tsx": "Displays quiz results, score breakdown, performance message, and restart option.",
+  "frontend/tailwind.config.js": "Tailwind configuration extending theme colors, radius, animations, and enabling plugins.",
+  "project_state.json": "JSON file describing the app’s build state, including project summary, architecture notes, existing implemented features, and pending feature requests for a cross‑platform quiz app using Airtable. It tracks versions, requirements, and planned functionality for Home, Quiz, and Result flows."
+}

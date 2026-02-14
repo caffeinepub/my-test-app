@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Build a cross-platform (Android/iOS) multiple-choice quiz app like Testbook called \"My Test App\" with Home, Quiz, and Result screens, using Airtable as the question data source and tracking score.",
+  "architectural_notes": [
+    "Data source: Airtable table with columns Question, OptionA, OptionB, OptionC, OptionD, CorrectAnswer.",
+    "Navigation flow: Home -> Quiz (iterates questions) -> Result -> Home (restart)."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-three-screens-home-quiz-result-for-the-app-named-my-test-app-and-implement-navigation-between-them-home-quiz-via-a-start-test-button-and-result-home-via-a-restart-test-button",
+      "title": "Create three screens (Home, Quiz, Result) for the app named \"My Test App\" and implement navigation between them: Home -> Quiz via a \"Start Test\" button, and Result -> Home via a \"Restart Test\" button.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-airtable-backed-question-loading-using-the-airtable-columns-question-optiona-optionb-optionc-optiond-correctanswer-add-configuration-inputs-for-airtable-connection-base-id-table-name-or-table-id-and-api-token-without-hardcoding-secrets-into-the-frontend-bundle",
+      "title": "Implement Airtable-backed question loading using the Airtable columns: Question, OptionA, OptionB, OptionC, OptionD, CorrectAnswer. Add configuration inputs for Airtable connection (Base ID, Table name or Table ID, and API token) without hardcoding secrets into the frontend bundle.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-a-local-fallback-question-set-static-bundled-with-the-frontend-so-the-quiz-screen-can-still-be-used-when-airtable-is-not-configured-or-temporarily-unavailable",
+      "title": "Provide a local fallback question set (static, bundled with the frontend) so the Quiz screen can still be used when Airtable is not configured or temporarily unavailable.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-the-quiz-screen-to-show-one-question-at-a-time-with-4-options-a-b-c-d-selecting-an-option-evaluates-correctness-against-correctanswer-and-increases-score-by-1-only-when-the-selected-option-is-correct",
+      "title": "Build the Quiz screen to show one question at a time with 4 options (A, B, C, D). Selecting an option evaluates correctness against CorrectAnswer and increases score by +1 only when the selected option is correct.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-next-button-on-the-quiz-screen-that-loads-the-next-question-after-the-last-question-automatically-navigate-to-the-result-screen-and-display-the-final-score-as-your-score-x-y-where-y-is-the-total-number-of-questions-attempted-in-that-run",
+      "title": "Add a \"Next\" button on the Quiz screen that loads the next question. After the last question, automatically navigate to the Result screen and display the final score as \"Your Score: X/Y\" where Y is the total number of questions attempted in that run.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-the-requested-simple-ui-styling-white-background-large-readable-text-and-colorful-buttons-for-the-answer-options-ensure-the-layout-is-mobile-friendly-for-android-ios-sized-screens-responsive",
+      "title": "Apply the requested simple UI styling: white background, large readable text, and colorful buttons for the answer options; ensure the layout is mobile-friendly for Android/iOS-sized screens (responsive).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create Home Screen with a \"Start Test\" button that navigates to the Quiz Screen",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Create Quiz Screen that loads questions (one at a time) from Airtable (or local fallback) with 4 options and a \"Next\" button",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Implement scoring logic: +1 for correct answer selection and compute total score over all questions",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Create Result Screen displaying total score (e.g., \"Your Score: 3/5\") and a \"Restart Test\" button to return to Home",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Integrate Airtable as a data source with columns: Question, OptionA, OptionB, OptionC, OptionD, CorrectAnswer",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Apply simple UI design: white background, large readable text, colorful option buttons",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "My Test App",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

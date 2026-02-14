@@ -1,0 +1,134 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-three-screens-home-quiz-result-for-the-app-named-my-test-app-and-implement-navigation-between-them-home-quiz-via-a-start-test-button-and-result-home-via-a-restart-test-button",
+      "featureTitle": "Create three screens (Home, Quiz, Result) for the app named \"My Test App\" and implement navigation between them: Home -> Quiz via a \"Start Test\" button, and Result -> Home via a \"Restart Test\" button.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/screens/HomeScreen.tsx",
+        "frontend/src/screens/QuizScreen.tsx",
+        "frontend/src/screens/ResultScreen.tsx"
+      ],
+      "components": [
+        "http-outcalls@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-airtable-backed-question-loading-using-the-airtable-columns-question-optiona-optionb-optionc-optiond-correctanswer-add-configuration-inputs-for-airtable-connection-base-id-table-name-or-table-id-and-api-token-without-hardcoding-secrets-into-the-frontend-bundle",
+      "featureTitle": "Implement Airtable-backed question loading using the Airtable columns: Question, OptionA, OptionB, OptionC, OptionD, CorrectAnswer. Add configuration inputs for Airtable connection (Base ID, Table name or Table ID, and API token) without hardcoding secrets into the frontend bundle.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/hooks/useQuestions.ts",
+        "frontend/src/lib/questionTypes.ts",
+        "frontend/src/screens/HomeScreen.tsx"
+      ],
+      "components": [
+        "http-outcalls@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-provide-a-local-fallback-question-set-static-bundled-with-the-frontend-so-the-quiz-screen-can-still-be-used-when-airtable-is-not-configured-or-temporarily-unavailable",
+      "featureTitle": "Provide a local fallback question set (static, bundled with the frontend) so the Quiz screen can still be used when Airtable is not configured or temporarily unavailable.",
+      "files": [
+        "frontend/src/data/fallbackQuestions.ts",
+        "frontend/src/hooks/useQuestions.ts",
+        "frontend/src/screens/QuizScreen.tsx"
+      ],
+      "components": [
+        "http-outcalls@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-the-quiz-screen-to-show-one-question-at-a-time-with-4-options-a-b-c-d-selecting-an-option-evaluates-correctness-against-correctanswer-and-increases-score-by-1-only-when-the-selected-option-is-correct",
+      "featureTitle": "Build the Quiz screen to show one question at a time with 4 options (A, B, C, D). Selecting an option evaluates correctness against CorrectAnswer and increases score by +1 only when the selected option is correct.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/screens/QuizScreen.tsx"
+      ],
+      "components": [
+        "http-outcalls@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-next-button-on-the-quiz-screen-that-loads-the-next-question-after-the-last-question-automatically-navigate-to-the-result-screen-and-display-the-final-score-as-your-score-x-y-where-y-is-the-total-number-of-questions-attempted-in-that-run",
+      "featureTitle": "Add a \"Next\" button on the Quiz screen that loads the next question. After the last question, automatically navigate to the Result screen and display the final score as \"Your Score: X/Y\" where Y is the total number of questions attempted in that run.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/screens/QuizScreen.tsx",
+        "frontend/src/screens/ResultScreen.tsx"
+      ],
+      "components": [
+        "http-outcalls@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-the-requested-simple-ui-styling-white-background-large-readable-text-and-colorful-buttons-for-the-answer-options-ensure-the-layout-is-mobile-friendly-for-android-ios-sized-screens-responsive",
+      "featureTitle": "Apply the requested simple UI styling: white background, large readable text, and colorful buttons for the answer options; ensure the layout is mobile-friendly for Android/iOS-sized screens (responsive).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/index.css",
+        "frontend/src/screens/HomeScreen.tsx",
+        "frontend/src/screens/QuizScreen.tsx",
+        "frontend/src/screens/ResultScreen.tsx"
+      ],
+      "components": [
+        "http-outcalls@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

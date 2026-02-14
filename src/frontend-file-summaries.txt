@@ -1,0 +1,11 @@
+{
+  "frontend/src/App.tsx": "Main application component managing screen navigation (Home, Quiz, Result) and quiz state including questions, current question index, selected answers, and score calculation with double-scoring prevention.",
+  "frontend/src/screens/HomeScreen.tsx": "Home screen component with Airtable configuration form (Base ID, Table ID, API Token) and a \"Start Test\" button that loads questions and initiates the quiz.",
+  "frontend/src/screens/QuizScreen.tsx": "Quiz screen displaying one question at a time with four colorful option buttons (A-D), progress indicator, and a \"Next\" button that advances through questions or finishes the test.",
+  "frontend/src/screens/ResultScreen.tsx": "Result screen showing the final score as \"X/Y\", percentage, performance message, correct/incorrect breakdown, and a \"Restart Test\" button to return to home.",
+  "frontend/src/lib/questionTypes.ts": "TypeScript interfaces for Question and Airtable data structures, plus a parser function to convert Airtable JSON responses into the internal Question model.",
+  "frontend/src/data/fallbackQuestions.ts": "Static array of 10 fallback questions with 4 options each, used when Airtable is not configured or fails to load.",
+  "frontend/src/hooks/useQuestions.ts": "Custom React hook managing question loading from Airtable via backend, Airtable configuration saving, error handling, and automatic fallback to local questions when needed.",
+  "frontend/src/hooks/useQueries.ts": "Placeholder file for React Query operations (intentionally minimal as useQuestions handles all backend interactions for this app).",
+  "frontend/src/index.css": "Global styles with OKLCH color system tokens for light/dark modes and Tailwind base configuration."
+}
